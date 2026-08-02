@@ -1,0 +1,491 @@
+Act as an award-winning UI/UX designer, senior frontend developer, and personal branding expert.
+
+Create a modern, premium, recruiter-focused personal portfolio website for an aspiring Data Analyst.
+
+The portfolio must look like a real professional portfolio suitable for job applications. It should be minimal, elegant, premium, responsive, SEO-friendly, and optimized for performance.
+
+Do NOT add fake work experience, fake internships, fake companies, fake certifications, fake achievements, fake technologies, or fake projects.
+
+Use ONLY the information provided below.
+
+==================================================
+PERSONAL INFORMATION
+==================================================
+
+Name:
+Vikash Rao
+
+Role:
+Aspiring Data Analyst
+
+Tagline:
+Transforming Raw Data into Actionable Business Insights
+
+Location:
+Jaunpur, Uttar Pradesh, India
+
+Professional Email:
+vikashrao625@gmail.com
+
+LinkedIn:
+https://www.linkedin.com/in/vikash-rao-402044336
+
+GitHub:
+https://github.com/vikashrao627-glitch
+
+==================================================
+PROFILE PHOTO
+==================================================
+
+I will upload my real passport-size/profile photo.
+
+Use the uploaded image EXACTLY as it is.
+
+DO NOT:
+- Generate a new portrait
+- Replace my face
+- Edit or crop the image
+- Retouch or beautify
+- Change my hairstyle
+- Change my beard
+- Change my clothes
+- Change my skin tone
+- Apply AI filters
+- Use stock photos
+
+Display the uploaded photo:
+
+• Hero Section (Right Side)
+• About Section
+
+Style:
+
+Premium glowing circular frame
+
+Glassmorphism border
+
+Soft blue glow
+
+Floating animation
+
+Responsive on every screen
+
+Use ONLY the uploaded image.
+
+==================================================
+RESUME
+==================================================
+
+I will upload my resume PDF.
+
+Create a fully working **Download Resume** button.
+
+The button must directly download/open the uploaded PDF.
+
+Never use a placeholder resume.
+
+==================================================
+HERO SECTION
+==================================================
+
+Headline
+
+Transforming Raw Data into Actionable Business Insights
+
+Subtitle
+
+I analyze datasets, clean data, build dashboards, and generate meaningful business insights using SQL, Excel, Python, Power BI, and Tableau.
+
+Buttons
+
+• View Projects
+
+• Download Resume (working)
+
+• Contact Me
+
+Background
+
+Professional animated analytics background
+
+Floating dashboard cards
+
+Graphs
+
+Charts
+
+Data points
+
+Grid animation
+
+Glowing gradients
+
+Modern business appearance.
+
+==================================================
+ABOUT
+==================================================
+
+Write a professional summary highlighting
+
+• Passion for Data Analytics
+
+• Business Intelligence
+
+• Dashboard Development
+
+• Data Cleaning
+
+• Exploratory Data Analysis
+
+• SQL Querying
+
+• Data Visualization
+
+• Problem Solving
+
+• Continuous Learning
+
+Mention honestly that I started learning Data Analytics in February 2026 and have been consistently building practical projects.
+
+Do NOT mention work experience.
+
+==================================================
+SKILLS
+==================================================
+
+Programming
+
+Python
+
+SQL
+
+Data Analysis
+
+Data Cleaning
+
+EDA
+
+Statistics
+
+Visualization
+
+Power BI
+
+Tableau
+
+Excel
+
+Matplotlib
+
+Database
+
+MySQL
+
+Tools
+
+Git
+
+GitHub
+
+Jupyter Notebook
+
+Google Colab
+
+Display animated cards with beautiful progress bars.
+
+==================================================
+FEATURED PROJECTS
+==================================================
+
+Amazon Sales Analysis Dashboard
+
+IBM HR Analytics Dashboard
+
+Retail Store SQL Project
+
+Customer Spending Statistics Analysis
+
+Customer Data Analysis
+
+Each project must contain
+
+Problem Statement
+
+Objectives
+
+Tools Used
+
+Key Insights
+
+Business Impact
+
+GitHub Button
+
+Beautiful Project Card
+
+Hover Animation
+
+Technology Badges
+
+Case Study Layout
+
+==================================================
+LEARNING JOURNEY
+==================================================
+
+Professional Vertical Timeline
+
+February 2026
+
+Started Data Analytics
+
+↓
+
+Excel
+
+↓
+
+SQL & MySQL
+
+↓
+
+Python
+
+↓
+
+EDA Projects
+
+↓
+
+Power BI Dashboards
+
+↓
+
+Tableau Dashboards
+
+↓
+
+Continuous Learning
+
+==================================================
+CERTIFICATIONS
+==================================================
+
+Only display real certificates.
+
+SQL (Intermediate) – HackerRank
+
+Deloitte Australia Data Analytics Job Simulation
+
+Do NOT add fake certificates.
+
+==================================================
+SERVICES
+==================================================
+
+Dashboard Development
+
+Business Intelligence
+
+Data Cleaning
+
+Data Visualization
+
+Excel Reporting
+
+Data Analysis
+
+==================================================
+TOOLS
+==================================================
+
+Python
+
+SQL
+
+MySQL
+
+Excel
+
+Power BI
+
+Tableau
+
+Git
+
+GitHub
+
+Jupyter Notebook
+
+Google Colab
+
+==================================================
+WHY HIRE ME
+==================================================
+
+Strong Analytical Thinking
+
+Interactive Dashboard Development
+
+Data Storytelling
+
+Continuous Learning Mindset
+
+==================================================
+CONTACT
+==================================================
+
+Modern Contact Form
+
+Name
+
+Email
+
+Message
+
+Social Icons
+
+GitHub
+
+LinkedIn
+
+Email
+
+Resume Download
+
+Email
+
+vikashrao625@gmail.com
+
+GitHub
+
+https://github.com/vikashrao627-glitch
+
+LinkedIn
+
+https://www.linkedin.com/in/vikash-rao-402044336
+
+==================================================
+FOOTER
+==================================================
+
+Turning Data into Decisions.
+
+Made with dedication by Vikash Rao.
+
+==================================================
+DESIGN
+==================================================
+
+Premium
+
+Minimal
+
+Dark Theme
+
+Glassmorphism
+
+Professional
+
+Modern Analytics
+
+Rounded Cards
+
+Beautiful Typography
+
+Perfect White Space
+
+==================================================
+COLOR PALETTE
+==================================================
+
+Primary
+
+#2563EB
+
+Secondary
+
+#06B6D4
+
+Accent
+
+#8B5CF6
+
+Background
+
+#0F172A
+
+Text
+
+White
+
+==================================================
+ANIMATIONS
+==================================================
+
+Smooth Scroll
+
+Scroll Reveal
+
+Typing Effect
+
+Animated Counters
+
+Gradient Buttons
+
+Floating Cards
+
+Hover Effects
+
+Loading Animation
+
+==================================================
+RESPONSIVE
+==================================================
+
+Desktop
+
+Laptop
+
+Tablet
+
+Mobile
+
+==================================================
+SEO
+==================================================
+
+Optimize titles
+
+Meta description
+
+Open Graph tags
+
+Semantic HTML
+
+Fast loading
+
+Accessible design
+
+==================================================
+IMPORTANT
+==================================================
+
+Use the uploaded profile photo exactly as provided.
+
+Use the uploaded resume PDF for the Download Resume button.
+
+Do NOT use placeholder images.
+
+Do NOT use placeholder resume.
+
+Do NOT use placeholder email.
+
+Do NOT use fake information.
+
+Every button must work correctly.
+
+Every social icon must open the correct GitHub and LinkedIn profile.
+
+The final website should feel like a premium portfolio built for recruiters from Deloitte, EY, PwC, Accenture, Capgemini, TCS, Infosys, Wipro, Cognizant, Amazon, Microsoft, and Google.
