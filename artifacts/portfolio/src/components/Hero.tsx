@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { Download, ArrowRight, Mail } from "lucide-react";
 import profilePhoto from "@assets/WhatsApp_Image_2026-06-26_at_9.08.09_PM_1785690592723.jpeg";
+import resumePdf from "@assets/Vikash_Rao_Resume_(1)_1785691986080.pdf";
 
 export default function Hero() {
   return (
@@ -49,7 +50,7 @@ export default function Hero() {
             <a href="#projects" className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg bg-primary text-primary-foreground font-medium hover:bg-primary/90 transition-colors shadow-[0_0_20px_rgba(37,99,235,0.4)]">
               View Projects <ArrowRight size={18} />
             </a>
-            <a href="https://github.com/vikashrao627-glitch" target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg glass-panel font-medium hover:bg-white/5 transition-colors">
+            <a href={resumePdf} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg glass-panel font-medium hover:bg-white/5 transition-colors">
               <Download size={18} /> Download Resume
             </a>
             <a href="#contact" className="inline-flex items-center justify-center p-3 rounded-lg glass-panel hover:bg-white/5 transition-colors text-muted-foreground hover:text-foreground">
