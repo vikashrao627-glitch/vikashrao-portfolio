@@ -119,7 +119,7 @@ export default function Contact() {
               {/* FormSubmit hidden config fields */}
               <input type="hidden" name="_captcha" value="false" />
               <input type="hidden" name="_template" value="table" />
-              <input type="hidden" name="_subject" value="New Portfolio Contact Form Submission" />
+              <input type="hidden" name="_subject" value="New Portfolio Contact Submission" />
 
               <div className="grid md:grid-cols-2 gap-6">
                 <div className="space-y-2">
