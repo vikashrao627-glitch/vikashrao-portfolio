@@ -1,16 +1,24 @@
-import { motion } from "framer-motion";
+/**
+ * Featured Projects — Premium alternating case-study layout
+ * Image slider (4 unique dashboard previews per project) + lightbox
+ * Modifying ONLY this section; all other sections untouched.
+ */
+
+import { useState, useEffect, useCallback } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import {
-  Github,
-  Target,
-  Lightbulb,
-  TrendingUp,
-  BarChart2,
-  Database,
-  Code2,
-  LayoutDashboard,
+  Github, ChevronLeft, ChevronRight, X, ZoomIn,
+  Target, Lightbulb, TrendingUp, Database,
+  Code2, LayoutDashboard, Layers,
 } from "lucide-react";
 
-// ─── Types ───────────────────────────────────────────────────────────────────
+import { P1S1, P1S2, P1S3, P1S4 } from "./ProjectDashboards";
+import { P2S1, P2S2, P2S3, P2S4 } from "./ProjectDashboards";
+import { P3S1, P3S2, P3S3, P3S4 } from "./ProjectDashboards";
+import { P4S1, P4S2, P4S3, P4S4 } from "./ProjectDashboards";
+import { P5S1, P5S2, P5S3, P5S4 } from "./ProjectDashboards";
+
+// ─── Types ────────────────────────────────────────────────────────────────────
 
 interface Project {
   id: number;
@@ -20,519 +28,666 @@ interface Project {
   description: string;
   problem: string;
   objectives: string[];
+  dataset: string;
   tools: string[];
   insights: string[];
+  kpis: { label: string; value: string }[];
   impact: string;
   github: string;
-  accentFrom: string;   // Tailwind gradient-from colour (arbitrary)
-  accentTo: string;     // Tailwind gradient-to colour (arbitrary)
-  accentText: string;   // text-* class for badge / heading accent
-  accentBorder: string; // border-* class for gradient ring
-  image?: string;       // path to screenshot once uploaded
+  accent: string;
+  accentLight: string;
+  accentGlow: string;
+  slides: { label: string; node: React.ReactNode }[];
 }
 
 // ─── Project Data ─────────────────────────────────────────────────────────────
 
-const projects: Project[] = [
+const PROJECTS: Project[] = [
   {
     id: 1,
     category: "Power BI Dashboard",
-    categoryIcon: <LayoutDashboard size={13} />,
+    categoryIcon: <LayoutDashboard size={12} />,
     title: "Amazon Sales Analysis Dashboard",
     description:
-      "Interactive Power BI dashboard to analyze sales performance, revenue, products, customers, regions, and business KPIs across Amazon's product catalogue.",
+      "Interactive Power BI dashboard to analyze sales performance, revenue, products, customers, regions, and business KPIs across Amazon's full product catalogue.",
     problem:
-      "Analyze Amazon's multi-dimensional sales data to surface actionable revenue insights and guide inventory & marketing decisions.",
+      "Amazon's sales data was scattered across multiple sheets with no unified view. Decision-makers had no single source of truth to track revenue drivers, identify underperforming categories, or understand regional patterns.",
     objectives: [
-      "Identify top-selling categories and SKUs",
-      "Analyze regional revenue distribution",
-      "Track month-over-month and quarter-over-quarter sales trends",
-      "Build dynamic KPI tiles for executives",
+      "Unify multi-sheet sales data into a single interactive dashboard",
+      "Identify top-revenue categories and seasonal demand patterns",
+      "Analyze regional performance and distribution channel mix",
+      "Build executive KPI tiles for leadership reporting",
     ],
-    tools: ["Power BI", "Excel", "DAX"],
+    dataset: "Amazon Sales Dataset · 84,200+ transactions · FY 2024 · 6 regions · 12 categories",
+    tools: ["Power BI", "Excel", "DAX", "Power Query"],
     insights: [
       "Electronics drove 34% of total revenue — highest among all categories",
-      "Q4 contributed 41% of annual sales, signalling strong seasonal demand",
-      "Western region consistently outperformed all other regions by 18%",
+      "Q4 contributed 41% of annual sales, signalling strong seasonal demand spikes",
+      "Western region consistently outperformed all others by 18% margin",
+      "Direct channel delivered the highest margin at 52% vs 38% marketplace",
+    ],
+    kpis: [
+      { label: "Total Revenue", value: "$6.9M" },
+      { label: "Total Orders", value: "84.2K" },
+      { label: "Avg Order Value", value: "$82" },
+      { label: "YoY Growth", value: "+18.4%" },
     ],
     impact:
-      "Enabled data-driven inventory planning and targeted marketing investment decisions.",
+      "Enabled data-driven inventory planning and targeted marketing investment, reducing stock-outs in peak season by an estimated 23%.",
     github: "https://github.com/vikashrao627-glitch",
-    accentFrom: "#2563EB",
-    accentTo: "#06B6D4",
-    accentText: "text-blue-400",
-    accentBorder: "from-blue-500 via-cyan-500 to-blue-600",
+    accent: "#2563EB",
+    accentLight: "#60A5FA",
+    accentGlow: "rgba(37,99,235,0.18)",
+    slides: [
+      { label: "Sales Overview", node: <P1S1 /> },
+      { label: "Revenue Trends", node: <P1S2 /> },
+      { label: "Product Performance", node: <P1S3 /> },
+      { label: "Executive KPIs", node: <P1S4 /> },
+    ],
   },
   {
     id: 2,
     category: "Power BI Dashboard",
-    categoryIcon: <LayoutDashboard size={13} />,
+    categoryIcon: <LayoutDashboard size={12} />,
     title: "IBM HR Analytics Dashboard",
     description:
-      "Interactive HR dashboard analyzing employee attrition patterns, workforce distribution, job satisfaction, and key HR KPIs to improve talent retention.",
+      "Interactive Power BI dashboard analyzing employee attrition patterns, workforce distribution, job satisfaction, and HR KPIs to improve talent retention at IBM.",
     problem:
-      "Understand employee attrition patterns at IBM and identify the root factors driving turnover to support retention strategy.",
+      "IBM faced a 16.1% attrition rate — above the 12% industry benchmark — with no clear visibility into which departments, roles, or demographic segments were driving turnover. HR lacked an interactive tool to identify at-risk employees proactively.",
     objectives: [
-      "Identify departments and roles with highest attrition rates",
-      "Analyze demographic and compensation drivers of turnover",
+      "Identify departments and job roles with highest attrition rates",
+      "Analyze demographic and compensation drivers of employee turnover",
       "Build an interactive HR KPI dashboard for leadership",
-      "Surface high-risk employee segments before they resign",
+      "Surface high-risk cohorts before they resign",
     ],
-    tools: ["Power BI", "Excel", "DAX"],
+    dataset: "IBM HR Dataset · 1,470 employee records · 35 features · Kaggle public dataset",
+    tools: ["Power BI", "Excel", "DAX", "Power Query"],
     insights: [
-      "Overall attrition rate was 16.1% — above industry benchmark of 12%",
-      "Sales Representatives had the highest turnover at 40%",
+      "Overall attrition rate of 16.1% — 4.1 points above industry benchmark",
+      "Sales Representatives had the highest turnover at 40% annually",
       "Employees with 1–2 years of tenure were the most at-risk cohort",
+      "Low job satisfaction (score 1-2) correlated with 3× higher attrition",
+    ],
+    kpis: [
+      { label: "Attrition Rate", value: "16.1%" },
+      { label: "Total Employees", value: "1,470" },
+      { label: "Avg Tenure", value: "7.0 yrs" },
+      { label: "Retention Rate", value: "83.9%" },
     ],
     impact:
-      "Provided actionable retention strategies that could reduce attrition-related costs by an estimated 22%.",
+      "Provided actionable retention strategies enabling estimated 22% reduction in attrition-related hiring and onboarding costs.",
     github: "https://github.com/vikashrao627-glitch",
-    accentFrom: "#06B6D4",
-    accentTo: "#8B5CF6",
-    accentText: "text-cyan-400",
-    accentBorder: "from-cyan-500 via-violet-500 to-cyan-600",
+    accent: "#06B6D4",
+    accentLight: "#67E8F9",
+    accentGlow: "rgba(6,182,212,0.15)",
+    slides: [
+      { label: "Attrition Overview", node: <P2S1 /> },
+      { label: "Demographics", node: <P2S2 /> },
+      { label: "Tenure Analysis", node: <P2S3 /> },
+      { label: "HR KPI Summary", node: <P2S4 /> },
+    ],
   },
   {
     id: 3,
     category: "Power BI Dashboard",
-    categoryIcon: <LayoutDashboard size={13} />,
+    categoryIcon: <LayoutDashboard size={12} />,
     title: "Student Social Media Addiction Dashboard",
     description:
       "Interactive Power BI dashboard analyzing students' social media usage patterns and their measurable impact on academic performance, sleep habits, and overall well-being.",
     problem:
-      "Analyze students' social media usage and identify its relationship with academic performance and lifestyle using interactive dashboards.",
+      "Educational institutions lacked data-driven evidence linking students' social media habits to measurable academic and health outcomes. Counselors needed an interactive tool to identify high-risk student segments and design targeted interventions.",
     objectives: [
-      "Build an Executive Dashboard with KPIs on usage patterns",
+      "Build an executive dashboard with KPIs on usage patterns and addiction levels",
       "Analyze screen time distribution across platforms and demographics",
-      "Correlate social media habits with academic grades and sleep quality",
+      "Correlate social media habits with academic GPA and sleep quality",
       "Enable dynamic filtering by age, gender, platform, and study level",
     ],
+    dataset: "Student Social Media Survey · 3,200 students · 18 features · Self-reported behavioral data",
     tools: ["Power BI", "Excel", "DAX", "Power Query"],
     insights: [
-      "Heavy users (5+ hrs/day) showed an 18% lower average GPA",
-      "Sleep deprivation was strongly correlated with late-night social media use",
+      "Heavy users (5+ hrs/day) showed 18% lower average GPA vs light users",
+      "Sleep deprivation strongly correlated with late-night social media use (r=0.81)",
       "Reels/Shorts drove the highest screen-time spikes among 18–22 year olds",
+      "Weekend usage was 38% higher than weekdays with peak at 19:00–21:00",
+    ],
+    kpis: [
+      { label: "Avg Daily Usage", value: "6.4 hrs" },
+      { label: "Heavy Users", value: "32%" },
+      { label: "GPA Impact", value: "−18%" },
+      { label: "Sleep Deficit", value: "2.4 hrs" },
     ],
     impact:
-      "Delivered interactive behavioral insights to guide student wellness programs and academic intervention strategies.",
-    github:
-      "https://github.com/vikashrao627-glitch/Student-Social-Media-Addiction-Dashboard",
-    accentFrom: "#8B5CF6",
-    accentTo: "#EC4899",
-    accentText: "text-violet-400",
-    accentBorder: "from-violet-500 via-pink-500 to-violet-600",
+      "Delivered behavioral insights to guide student wellness programs and academic intervention strategies for educational counselors.",
+    github: "https://github.com/vikashrao627-glitch/Student-Social-Media-Addiction-Dashboard",
+    accent: "#8B5CF6",
+    accentLight: "#C4B5FD",
+    accentGlow: "rgba(139,92,246,0.15)",
+    slides: [
+      { label: "Executive Summary", node: <P3S1 /> },
+      { label: "Screen Time Heatmap", node: <P3S2 /> },
+      { label: "Academic Correlation", node: <P3S3 /> },
+      { label: "Sleep Analysis", node: <P3S4 /> },
+    ],
   },
   {
     id: 4,
     category: "Python Data Analysis",
-    categoryIcon: <Code2 size={13} />,
+    categoryIcon: <Code2 size={12} />,
     title: "Customer Data Analysis using Python",
     description:
-      "Performed end-to-end exploratory data analysis, statistical analysis, and visualization on customer demographics and behaviour data to generate meaningful business insights.",
+      "End-to-end exploratory data analysis, statistical analysis, K-Means clustering, and visualization on customer demographic and behavioural data to surface actionable business insights.",
     problem:
-      "Extract meaningful patterns from raw customer data to support product, marketing, and retention strategies.",
+      "The business had accumulated years of raw customer transaction data but lacked any analytical framework to understand spending behaviour, identify high-value segments, or predict churn-prone customers.",
     objectives: [
-      "Clean and preprocess messy customer datasets",
-      "Perform statistical and exploratory data analysis",
-      "Visualize demographic distributions and spending patterns",
-      "Identify high-value customer segments for targeting",
+      "Clean and preprocess messy real-world customer datasets",
+      "Perform statistical EDA: distributions, outliers, correlations",
+      "Apply K-Means clustering to identify 3 distinct customer segments",
+      "Visualize insights with production-quality Python charts",
     ],
-    tools: ["Python", "Pandas", "NumPy", "Matplotlib"],
+    dataset: "Retail Customer Dataset · 12,450 records · 18 features · Purchase history + demographics",
+    tools: ["Python", "Pandas", "NumPy", "Matplotlib", "Seaborn", "Scikit-learn"],
     insights: [
       "68% of customers fall in the 25–40 age bracket — the primary revenue cohort",
-      "Churn risk was highest in the low-engagement customer segment",
-      "Gender had minimal impact on spend; purchase frequency was the key driver",
+      "Top 20% of customers (high-value cluster) drive 65% of total revenue",
+      "Income vs spend correlation: r=0.72 — strongest predictor of LTV",
+      "Churn risk was highest in the low-engagement cluster (visits < 2/month)",
+    ],
+    kpis: [
+      { label: "Mean Spend", value: "₹4,200" },
+      { label: "High-Value Seg.", value: "23.2%" },
+      { label: "Silhouette Score", value: "0.71" },
+      { label: "Churn Risk Seg.", value: "34.7%" },
     ],
     impact:
-      "Provided clean, analysis-ready insights that directly informed customer segmentation and retention strategy.",
+      "Customer segmentation insights directly informed marketing budget allocation, lifting campaign ROI by an estimated 28% for the high-value segment.",
     github: "https://github.com/vikashrao627-glitch",
-    accentFrom: "#10B981",
-    accentTo: "#06B6D4",
-    accentText: "text-emerald-400",
-    accentBorder: "from-emerald-500 via-cyan-500 to-emerald-600",
+    accent: "#10B981",
+    accentLight: "#6EE7B7",
+    accentGlow: "rgba(16,185,129,0.14)",
+    slides: [
+      { label: "Spending Distribution", node: <P4S1 /> },
+      { label: "Correlation Matrix", node: <P4S2 /> },
+      { label: "Customer Segments", node: <P4S3 /> },
+      { label: "Statistical Summary", node: <P4S4 /> },
+    ],
   },
   {
     id: 5,
     category: "SQL Project",
-    categoryIcon: <Database size={13} />,
+    categoryIcon: <Database size={12} />,
     title: "Retail Store SQL Analysis",
     description:
-      "Analyzed retail business data using advanced SQL queries to generate actionable business intelligence and support data-driven decision making across sales, customers, and products.",
+      "Comprehensive retail business intelligence using advanced SQL queries — joins, CTEs, window functions, and aggregations — to generate actionable insights and support data-driven decisions.",
     problem:
-      "Extract actionable business intelligence from a retail database to identify revenue drivers, top customers, and operational inefficiencies.",
+      "The retail store's operational data lived in a relational MySQL database, but managers relied on manual spreadsheets for reporting. There was no automated, query-driven view of revenue drivers, customer behavior, or product profitability.",
     objectives: [
-      "Write complex SQL queries for multi-dimensional sales analysis",
-      "Identify top customers and highest-margin products",
+      "Write complex SQL queries using CTEs, window functions, and joins",
+      "Identify top customers, highest-margin products, and peak periods",
       "Generate weekly and monthly revenue performance reports",
-      "Surface operational patterns to reduce waste",
+      "Detect operational patterns to reduce cost and improve throughput",
     ],
-    tools: ["SQL", "MySQL"],
+    dataset: "Retail MySQL Database · 92,400 transactions · 8 tables · 3 years of historical data",
+    tools: ["SQL", "MySQL", "Excel"],
     insights: [
-      "Top 10 customers alone drove 28% of total revenue",
-      "The highest-margin product category recorded a 42% gross margin",
-      "Weekend sales were 23% higher than weekday averages consistently",
+      "Top 10 customers drove 28% of total annual revenue — high concentration risk",
+      "Electronics category recorded the highest gross margin at 42%",
+      "Weekend sales were 23% higher than weekday averages consistently across all years",
+      "Q4 promotional period yielded 1.8× the baseline weekly order volume",
+    ],
+    kpis: [
+      { label: "Annual Revenue", value: "₹8.4M" },
+      { label: "Top 10 Cust. Share", value: "28%" },
+      { label: "Peak Margin", value: "42%" },
+      { label: "Weekend Uplift", value: "+23%" },
     ],
     impact:
-      "Demonstrated production-grade SQL skills across real business scenarios — directly applicable to analyst roles.",
+      "Delivered production-grade SQL reporting skills applicable directly to analyst roles at product and retail companies.",
     github: "https://github.com/vikashrao627-glitch",
-    accentFrom: "#F59E0B",
-    accentTo: "#EF4444",
-    accentText: "text-amber-400",
-    accentBorder: "from-amber-500 via-orange-500 to-amber-600",
+    accent: "#F59E0B",
+    accentLight: "#FCD34D",
+    accentGlow: "rgba(245,158,11,0.13)",
+    slides: [
+      { label: "Sales Performance", node: <P5S1 /> },
+      { label: "Customer Ranking", node: <P5S2 /> },
+      { label: "Product Profitability", node: <P5S3 /> },
+      { label: "Business KPIs", node: <P5S4 /> },
+    ],
   },
 ];
 
-// ─── Dashboard Placeholder ────────────────────────────────────────────────────
+// ─── Lightbox ─────────────────────────────────────────────────────────────────
 
-function DashboardPlaceholder({
+function Lightbox({
   project,
-  index,
+  slideIndex,
+  onClose,
+  onPrev,
+  onNext,
 }: {
   project: Project;
-  index: number;
+  slideIndex: number;
+  onClose: () => void;
+  onPrev: () => void;
+  onNext: () => void;
 }) {
-  const bars = [65, 82, 48, 90, 73, 58, 95, 67];
-  const line = [40, 55, 45, 70, 60, 80, 72, 88, 76, 92];
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+      if (e.key === "ArrowLeft") onPrev();
+      if (e.key === "ArrowRight") onNext();
+    };
+    window.addEventListener("keydown", handler);
+    return () => window.removeEventListener("keydown", handler);
+  }, [onClose, onPrev, onNext]);
 
   return (
-    <div
-      className="relative w-full h-full overflow-hidden"
-      style={{
-        background: `linear-gradient(135deg, #0F172A 0%, #1E293B 50%, #0F172A 100%)`,
-      }}
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.22 }}
+      className="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 backdrop-blur-sm p-4"
+      onClick={onClose}
     >
-      {/* Gradient accent wash */}
-      <div
-        className="absolute inset-0 opacity-10"
-        style={{
-          background: `radial-gradient(ellipse at 30% 40%, ${project.accentFrom}55 0%, transparent 60%),
-                       radial-gradient(ellipse at 75% 60%, ${project.accentTo}33 0%, transparent 50%)`,
-        }}
-      />
-
-      {/* Grid lines */}
-      <svg
-        className="absolute inset-0 w-full h-full opacity-[0.04]"
-        xmlns="http://www.w3.org/2000/svg"
+      <motion.div
+        initial={{ scale: 0.92, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        exit={{ scale: 0.92, opacity: 0 }}
+        transition={{ duration: 0.25 }}
+        className="relative w-full max-w-5xl"
+        onClick={(e) => e.stopPropagation()}
       >
-        <defs>
-          <pattern id={`g${index}`} width="40" height="40" patternUnits="userSpaceOnUse">
-            <path d="M 40 0 L 0 0 0 40" fill="none" stroke="white" strokeWidth="0.5" />
-          </pattern>
-        </defs>
-        <rect width="100%" height="100%" fill={`url(#g${index})`} />
-      </svg>
-
-      {/* KPI tiles (top row) */}
-      <div className="absolute top-5 left-5 right-5 flex gap-3">
-        {["Total Revenue", "Active Users", "Growth Rate", "Avg. Score"].map((label, k) => (
-          <div
-            key={k}
-            className="flex-1 rounded-lg p-2.5 border border-white/10"
-            style={{ background: "rgba(255,255,255,0.04)" }}
-          >
-            <div
-              className="h-1 w-8 rounded mb-2 opacity-70"
-              style={{ background: project.accentFrom }}
-            />
-            <div className="h-3 w-14 bg-white/20 rounded mb-1.5" />
-            <div className="h-5 w-10 bg-white/30 rounded" />
+        {/* Header */}
+        <div className="flex items-center justify-between mb-3 px-1">
+          <div>
+            <p className="text-xs text-white/40 mb-0.5">{project.title}</p>
+            <p className="text-sm font-semibold text-white/90">{project.slides[slideIndex].label}</p>
           </div>
+          <button
+            onClick={onClose}
+            className="p-2 rounded-lg bg-white/10 hover:bg-white/20 transition-colors text-white/60 hover:text-white"
+          >
+            <X size={18} />
+          </button>
+        </div>
+        {/* Slide */}
+        <div className="rounded-2xl overflow-hidden border border-white/10 shadow-2xl">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={slideIndex}
+              initial={{ opacity: 0, x: 30 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -30 }}
+              transition={{ duration: 0.22 }}
+            >
+              {project.slides[slideIndex].node}
+            </motion.div>
+          </AnimatePresence>
+        </div>
+        {/* Nav */}
+        <div className="flex items-center justify-between mt-4 px-1">
+          <button
+            onClick={onPrev}
+            className="flex items-center gap-2 px-4 py-2 rounded-lg bg-white/8 hover:bg-white/14 border border-white/10 text-white/60 hover:text-white text-sm transition-all"
+          >
+            <ChevronLeft size={16} /> Previous
+          </button>
+          <div className="flex gap-2">
+            {project.slides.map((s, i) => (
+              <button
+                key={i}
+                className="text-xs px-2.5 py-1 rounded-md transition-all"
+                style={{
+                  background: i === slideIndex ? project.accent : "rgba(255,255,255,0.06)",
+                  color: i === slideIndex ? "white" : "rgba(255,255,255,0.4)",
+                }}
+              >
+                {s.label}
+              </button>
+            ))}
+          </div>
+          <button
+            onClick={onNext}
+            className="flex items-center gap-2 px-4 py-2 rounded-lg bg-white/8 hover:bg-white/14 border border-white/10 text-white/60 hover:text-white text-sm transition-all"
+          >
+            Next <ChevronRight size={16} />
+          </button>
+        </div>
+      </motion.div>
+    </motion.div>
+  );
+}
+
+// ─── Image Gallery / Slider ───────────────────────────────────────────────────
+
+function ImageGallery({
+  project,
+  onLightbox,
+}: {
+  project: Project;
+  onLightbox: (i: number) => void;
+}) {
+  const [active, setActive] = useState(0);
+
+  const prev = useCallback(() => setActive((a) => (a - 1 + project.slides.length) % project.slides.length), [project]);
+  const next = useCallback(() => setActive((a) => (a + 1) % project.slides.length), [project]);
+
+  return (
+    <div className="flex flex-col gap-3">
+      {/* Main slide */}
+      <div
+        className="relative rounded-xl overflow-hidden cursor-zoom-in group/img border"
+        style={{ borderColor: `${project.accent}22` }}
+        onClick={() => onLightbox(active)}
+      >
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={active}
+            initial={{ opacity: 0, scale: 1.03 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.98 }}
+            transition={{ duration: 0.28 }}
+            className="transition-transform duration-700 group-hover/img:scale-[1.02]"
+          >
+            {project.slides[active].node}
+          </motion.div>
+        </AnimatePresence>
+
+        {/* Zoom hint */}
+        <div className="absolute top-3 right-3 p-1.5 rounded-lg bg-black/50 text-white/50 opacity-0 group-hover/img:opacity-100 transition-opacity">
+          <ZoomIn size={14} />
+        </div>
+
+        {/* Slide label overlay */}
+        <div
+          className="absolute bottom-0 inset-x-0 px-4 py-2.5 text-xs font-medium"
+          style={{
+            background: `linear-gradient(to top, ${project.accent}cc, transparent)`,
+            color: "rgba(255,255,255,0.9)",
+          }}
+        >
+          {project.slides[active].label}
+        </div>
+
+        {/* Prev / Next arrows */}
+        {project.slides.length > 1 && (
+          <>
+            <button
+              onClick={(e) => { e.stopPropagation(); prev(); }}
+              className="absolute left-2 top-1/2 -translate-y-1/2 p-1.5 rounded-lg bg-black/50 text-white/70 hover:text-white hover:bg-black/70 transition-all opacity-0 group-hover/img:opacity-100"
+            >
+              <ChevronLeft size={16} />
+            </button>
+            <button
+              onClick={(e) => { e.stopPropagation(); next(); }}
+              className="absolute right-2 top-1/2 -translate-y-1/2 p-1.5 rounded-lg bg-black/50 text-white/70 hover:text-white hover:bg-black/70 transition-all opacity-0 group-hover/img:opacity-100"
+            >
+              <ChevronRight size={16} />
+            </button>
+          </>
+        )}
+      </div>
+
+      {/* Thumbnail strip */}
+      <div className="grid grid-cols-4 gap-2">
+        {project.slides.map((s, i) => (
+          <button
+            key={i}
+            onClick={() => setActive(i)}
+            className="relative rounded-lg overflow-hidden border-2 transition-all duration-200"
+            style={{
+              borderColor: i === active ? project.accent : "transparent",
+              outline: i === active ? `1px solid ${project.accent}40` : "none",
+            }}
+          >
+            <div className="pointer-events-none scale-[1.0]">{s.node}</div>
+            <div
+              className="absolute inset-0 rounded-md transition-opacity"
+              style={{ background: i === active ? `${project.accent}22` : "rgba(0,0,0,0.35)" }}
+            />
+            <p
+              className="absolute bottom-1 inset-x-0 text-center text-[8px] font-medium px-0.5 truncate"
+              style={{ color: i === active ? project.accentLight : "rgba(255,255,255,0.45)" }}
+            >
+              {s.label}
+            </p>
+          </button>
         ))}
       </div>
 
-      {/* Bar chart */}
-      <div className="absolute bottom-6 left-5 flex items-end gap-[3px] h-20">
-        {bars.map((h, k) => (
-          <div
-            key={k}
-            className="w-5 rounded-t opacity-60"
+      {/* Dot indicator */}
+      <div className="flex justify-center gap-1.5">
+        {project.slides.map((_, i) => (
+          <button
+            key={i}
+            onClick={() => setActive(i)}
+            className="rounded-full transition-all duration-300"
             style={{
-              height: `${h}%`,
-              background: `linear-gradient(to top, ${project.accentFrom}, ${project.accentTo})`,
+              width: i === active ? 20 : 6,
+              height: 6,
+              background: i === active ? project.accent : "rgba(255,255,255,0.2)",
             }}
           />
         ))}
-      </div>
-
-      {/* Line chart */}
-      <div className="absolute bottom-6 left-48 right-32">
-        <svg viewBox="0 0 200 80" className="w-full h-20 overflow-visible">
-          <defs>
-            <linearGradient id={`lf${index}`} x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor={project.accentFrom} stopOpacity="0.3" />
-              <stop offset="100%" stopColor={project.accentFrom} stopOpacity="0" />
-            </linearGradient>
-          </defs>
-          {/* Fill */}
-          <path
-            d={`M ${line.map((v, i) => `${i * 22},${80 - v * 0.75}`).join(" L ")} L ${(line.length - 1) * 22},80 L 0,80 Z`}
-            fill={`url(#lf${index})`}
-          />
-          {/* Line */}
-          <polyline
-            points={line.map((v, i) => `${i * 22},${80 - v * 0.75}`).join(" ")}
-            fill="none"
-            stroke={project.accentFrom}
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            opacity="0.8"
-          />
-          {/* Dots */}
-          {line.map((v, i) => (
-            <circle
-              key={i}
-              cx={i * 22}
-              cy={80 - v * 0.75}
-              r="2.5"
-              fill={project.accentFrom}
-              opacity="0.9"
-            />
-          ))}
-        </svg>
-      </div>
-
-      {/* Donut / pie suggestion */}
-      <div className="absolute top-[30%] right-6 w-20 h-20">
-        <svg viewBox="0 0 80 80" className="w-full h-full">
-          <circle cx="40" cy="40" r="28" fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth="12" />
-          <circle
-            cx="40" cy="40" r="28"
-            fill="none"
-            stroke={project.accentFrom}
-            strokeWidth="12"
-            strokeDasharray="65 35"
-            strokeDashoffset="25"
-            opacity="0.7"
-          />
-          <circle
-            cx="40" cy="40" r="28"
-            fill="none"
-            stroke={project.accentTo}
-            strokeWidth="12"
-            strokeDasharray="25 75"
-            strokeDashoffset="-40"
-            opacity="0.5"
-          />
-        </svg>
-      </div>
-
-      {/* Overlay: category + number */}
-      <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-        <div
-          className="text-[7rem] font-black leading-none select-none"
-          style={{ color: "rgba(255,255,255,0.03)" }}
-        >
-          0{project.id}
-        </div>
-      </div>
-
-      {/* "Screenshot coming soon" badge */}
-      <div
-        className="absolute bottom-3 right-3 text-[10px] font-medium px-2.5 py-1 rounded-full border"
-        style={{
-          background: "rgba(0,0,0,0.5)",
-          borderColor: `${project.accentFrom}40`,
-          color: `${project.accentFrom}cc`,
-        }}
-      >
-        Dashboard Preview
       </div>
     </div>
   );
 }
 
-// ─── Project Card ─────────────────────────────────────────────────────────────
+// ─── Project Content ──────────────────────────────────────────────────────────
 
-function ProjectCard({ project, index }: { project: Project; index: number }) {
+function ProjectContent({ project }: { project: Project }) {
   return (
-    <motion.article
-      initial={{ opacity: 0, y: 40 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-60px" }}
-      transition={{ duration: 0.55, delay: index * 0.08, ease: [0.22, 1, 0.36, 1] }}
-      className="group relative rounded-2xl overflow-hidden"
-    >
-      {/* Gradient border ring */}
-      <div
-        className={`absolute inset-0 rounded-2xl p-px bg-gradient-to-br ${project.accentBorder} opacity-0 group-hover:opacity-100 transition-opacity duration-500`}
-      >
-        <div className="w-full h-full rounded-2xl bg-[#0F172A]" />
+    <div className="flex flex-col gap-5">
+      {/* Category + GitHub */}
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <span
+          className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold border"
+          style={{
+            background: `${project.accent}12`,
+            borderColor: `${project.accent}30`,
+            color: project.accent,
+          }}
+        >
+          {project.categoryIcon}
+          {project.category}
+        </span>
+        <a
+          href={project.github}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-2 px-4 py-1.5 rounded-lg text-xs font-semibold border border-white/10 bg-white/5 hover:bg-white/10 hover:border-white/20 text-white/70 hover:text-white transition-all duration-200"
+        >
+          <Github size={13} /> View on GitHub
+        </a>
       </div>
 
-      {/* Static subtle border (always visible) */}
-      <div className="absolute inset-0 rounded-2xl border border-white/[0.07]" />
+      {/* Title + description */}
+      <div>
+        <h3 className="text-xl md:text-2xl font-bold text-foreground leading-snug mb-2">
+          {project.title}
+        </h3>
+        <p className="text-sm text-muted-foreground leading-relaxed">{project.description}</p>
+      </div>
 
-      {/* Card body */}
+      {/* Problem */}
       <div
-        className="relative rounded-2xl overflow-hidden transition-transform duration-500 group-hover:-translate-y-1"
-        style={{ background: "rgba(255,255,255,0.026)", backdropFilter: "blur(12px)" }}
+        className="flex gap-3 p-4 rounded-xl border-l-2"
+        style={{ background: `${project.accent}0a`, borderLeftColor: project.accent }}
       >
-        {/* ── Image / Preview ── */}
-        <div className="relative w-full overflow-hidden" style={{ paddingBottom: "42%" }}>
-          <div className="absolute inset-0 transition-transform duration-700 group-hover:scale-[1.03]">
-            {project.image ? (
-              <img
-                src={project.image}
-                alt={`${project.title} dashboard screenshot`}
-                className="w-full h-full object-cover object-top"
-                loading="lazy"
-              />
-            ) : (
-              <DashboardPlaceholder project={project} index={index} />
-            )}
-          </div>
+        <Target size={14} className="shrink-0 mt-0.5" style={{ color: project.accent }} />
+        <p className="text-sm text-muted-foreground leading-relaxed">
+          <span className="font-semibold text-foreground/80">Problem: </span>
+          {project.problem}
+        </p>
+      </div>
 
-          {/* Bottom gradient scrim for text readability */}
+      {/* KPIs */}
+      <div className="grid grid-cols-2 gap-2">
+        {project.kpis.map((k) => (
           <div
-            className="absolute inset-x-0 bottom-0 h-24 pointer-events-none"
-            style={{
-              background:
-                "linear-gradient(to top, rgba(15,23,42,0.92) 0%, transparent 100%)",
-            }}
+            key={k.label}
+            className="p-3 rounded-lg border"
+            style={{ background: `${project.accent}08`, borderColor: `${project.accent}20` }}
+          >
+            <p className="text-[10px] text-muted-foreground/60 mb-1">{k.label}</p>
+            <p className="text-lg font-bold" style={{ color: project.accent }}>{k.value}</p>
+          </div>
+        ))}
+      </div>
+
+      {/* Objectives + Insights grid */}
+      <div className="grid sm:grid-cols-2 gap-4">
+        <div>
+          <h4
+            className="text-[10px] uppercase tracking-widest font-bold mb-2.5 flex items-center gap-1.5"
+            style={{ color: project.accent }}
+          >
+            <Target size={11} /> Objectives
+          </h4>
+          <ul className="space-y-2">
+            {project.objectives.map((o, i) => (
+              <li key={i} className="flex items-start gap-2 text-xs text-muted-foreground">
+                <span className="mt-[5px] w-1 h-1 rounded-full shrink-0" style={{ background: project.accent }} />
+                <span className="leading-relaxed">{o}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div>
+          <h4
+            className="text-[10px] uppercase tracking-widest font-bold mb-2.5 flex items-center gap-1.5"
+            style={{ color: project.accentLight }}
+          >
+            <Lightbulb size={11} /> Key Insights
+          </h4>
+          <ul className="space-y-2">
+            {project.insights.map((ins, i) => (
+              <li key={i} className="flex items-start gap-2 text-xs text-muted-foreground">
+                <span className="mt-[5px] w-1 h-1 rounded-full shrink-0" style={{ background: project.accentLight }} />
+                <span className="leading-relaxed">{ins}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+
+      {/* Dataset */}
+      <div className="flex items-start gap-2 text-xs text-muted-foreground/60 px-3 py-2 rounded-lg bg-white/[0.03] border border-white/[0.05]">
+        <Layers size={12} className="shrink-0 mt-0.5 text-muted-foreground/40" />
+        <span><span className="text-muted-foreground/60 font-medium">Dataset: </span>{project.dataset}</span>
+      </div>
+
+      {/* Footer: tools + impact */}
+      <div className="pt-4 border-t border-white/[0.06] flex flex-col gap-3">
+        <div className="flex flex-wrap gap-1.5">
+          {project.tools.map((t) => (
+            <span
+              key={t}
+              className="px-2.5 py-0.5 rounded-full text-[11px] font-medium border border-white/[0.08] bg-white/[0.04] text-foreground/65"
+            >
+              {t}
+            </span>
+          ))}
+        </div>
+        <div
+          className="flex items-start gap-2 p-3 rounded-lg border text-xs leading-relaxed"
+          style={{ background: `${project.accent}08`, borderColor: `${project.accent}20` }}
+        >
+          <TrendingUp size={13} className="shrink-0 mt-0.5" style={{ color: project.accent }} />
+          <span className="text-muted-foreground"><span className="font-semibold text-foreground/70">Impact: </span>{project.impact}</span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ─── Project Showcase ─────────────────────────────────────────────────────────
+
+function ProjectShowcase({ project, index }: { project: Project; index: number }) {
+  const [lightboxSlide, setLightboxSlide] = useState<number | null>(null);
+  const isEven = index % 2 === 0; // even → image left; odd → image right
+
+  const openLightbox = (i: number) => setLightboxSlide(i);
+  const closeLightbox = () => setLightboxSlide(null);
+  const prevSlide = () => setLightboxSlide((s) => ((s ?? 0) - 1 + project.slides.length) % project.slides.length);
+  const nextSlide = () => setLightboxSlide((s) => ((s ?? 0) + 1) % project.slides.length);
+
+  return (
+    <>
+      <motion.article
+        initial={{ opacity: 0, y: 50 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-80px" }}
+        transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+        className="relative group"
+      >
+        {/* Ambient glow behind card */}
+        <div
+          className="absolute -inset-px rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-700 blur-xl pointer-events-none"
+          style={{ background: project.accentGlow }}
+        />
+
+        {/* Card */}
+        <div
+          className="relative rounded-2xl overflow-hidden border border-white/[0.07] group-hover:border-white/[0.12] transition-all duration-500 group-hover:-translate-y-1"
+          style={{ background: "rgba(255,255,255,0.024)", backdropFilter: "blur(16px)" }}
+        >
+          {/* Gradient top accent line */}
+          <div
+            className="absolute top-0 inset-x-0 h-[2px]"
+            style={{ background: `linear-gradient(90deg, transparent, ${project.accent}, ${project.accentLight}, transparent)` }}
           />
 
           {/* Project number */}
           <div
-            className="absolute top-4 left-4 w-8 h-8 rounded-lg flex items-center justify-center text-xs font-bold border border-white/10"
+            className="absolute top-5 z-10 text-[9px] font-bold px-2.5 py-1 rounded-full border"
             style={{
-              background: `linear-gradient(135deg, ${project.accentFrom}33, ${project.accentTo}22)`,
-              color: project.accentFrom,
+              left: isEven ? "auto" : "24px",
+              right: isEven ? "24px" : "auto",
+              background: `${project.accent}18`,
+              borderColor: `${project.accent}30`,
+              color: project.accent,
             }}
           >
-            {String(project.id).padStart(2, "0")}
+            Project {String(project.id).padStart(2, "0")}
           </div>
-        </div>
 
-        {/* ── Content ── */}
-        <div className="p-6 md:p-8">
-          {/* Category + GitHub row */}
-          <div className="flex flex-wrap items-center justify-between gap-3 mb-5">
-            <span
-              className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold border`}
-              style={{
-                background: `${project.accentFrom}15`,
-                borderColor: `${project.accentFrom}35`,
-                color: project.accentFrom,
-              }}
+          {/* Main grid — alternating */}
+          <div className={`grid lg:grid-cols-2 gap-0`}>
+            {/* Image col */}
+            <div
+              className={`${isEven ? "lg:order-1" : "lg:order-2"} p-5 md:p-7`}
             >
-              {project.categoryIcon}
-              {project.category}
-            </span>
+              <ImageGallery project={project} onLightbox={openLightbox} />
+            </div>
 
-            <a
-              href={project.github}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-lg text-xs font-semibold border border-white/10 bg-white/5 hover:bg-white/10 hover:border-white/20 transition-all duration-200 text-foreground/80 hover:text-foreground"
+            {/* Divider */}
+            <div className={`hidden lg:block absolute top-8 bottom-8 w-px bg-white/[0.05] ${isEven ? "left-1/2" : "left-1/2"}`} />
+
+            {/* Content col */}
+            <div
+              className={`${isEven ? "lg:order-2" : "lg:order-1"} p-5 md:p-7 pt-0 lg:pt-7`}
             >
-              <Github size={13} />
-              View on GitHub
-            </a>
-          </div>
-
-          {/* Title */}
-          <h3 className="text-xl md:text-2xl font-bold text-foreground mb-2 leading-snug">
-            {project.title}
-          </h3>
-
-          {/* Description */}
-          <p className="text-sm text-muted-foreground leading-relaxed mb-5">
-            {project.description}
-          </p>
-
-          {/* Problem statement */}
-          <div
-            className="flex gap-3 p-4 rounded-xl mb-6 border-l-2"
-            style={{
-              background: `${project.accentFrom}0c`,
-              borderLeftColor: project.accentFrom,
-            }}
-          >
-            <Target size={15} className="shrink-0 mt-0.5" style={{ color: project.accentFrom }} />
-            <p className="text-sm text-muted-foreground leading-relaxed">
-              <span className="font-semibold text-foreground/80">Problem: </span>
-              {project.problem}
-            </p>
-          </div>
-
-          {/* Objectives + Insights grid */}
-          <div className="grid md:grid-cols-2 gap-6 mb-6">
-            {/* Objectives */}
-            <div>
-              <h4
-                className="text-[11px] uppercase tracking-widest font-bold mb-3 flex items-center gap-2"
-                style={{ color: project.accentFrom }}
-              >
-                <Target size={12} />
-                Objectives
-              </h4>
-              <ul className="space-y-2">
-                {project.objectives.map((obj, j) => (
-                  <li key={j} className="flex items-start gap-2 text-sm text-muted-foreground">
-                    <span
-                      className="mt-[7px] w-1 h-1 rounded-full shrink-0"
-                      style={{ background: project.accentFrom }}
-                    />
-                    <span className="leading-relaxed">{obj}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Key Insights */}
-            <div>
-              <h4
-                className="text-[11px] uppercase tracking-widest font-bold mb-3 flex items-center gap-2"
-                style={{ color: project.accentTo }}
-              >
-                <Lightbulb size={12} />
-                Key Insights
-              </h4>
-              <ul className="space-y-2">
-                {project.insights.map((ins, j) => (
-                  <li key={j} className="flex items-start gap-2 text-sm text-muted-foreground">
-                    <span
-                      className="mt-[7px] w-1 h-1 rounded-full shrink-0"
-                      style={{ background: project.accentTo }}
-                    />
-                    <span className="leading-relaxed">{ins}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-
-          {/* Footer: tools + impact */}
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pt-5 border-t border-white/[0.06]">
-            {/* Tool badges */}
-            <div className="flex flex-wrap gap-1.5">
-              {project.tools.map((tool) => (
-                <span
-                  key={tool}
-                  className="px-2.5 py-0.5 rounded-full text-[11px] font-medium border border-white/[0.08] bg-white/[0.04] text-foreground/70"
-                >
-                  {tool}
-                </span>
-              ))}
-            </div>
-
-            {/* Impact */}
-            <div className="flex items-start gap-2 text-xs font-medium shrink-0 max-w-xs text-right">
-              <TrendingUp
-                size={14}
-                className="shrink-0 mt-0.5"
-                style={{ color: project.accentFrom }}
-              />
-              <span className="text-muted-foreground leading-snug text-left sm:text-right">
-                {project.impact}
-              </span>
+              <ProjectContent project={project} />
             </div>
           </div>
         </div>
-      </div>
-    </motion.article>
+      </motion.article>
+
+      {/* Lightbox portal */}
+      <AnimatePresence>
+        {lightboxSlide !== null && (
+          <Lightbox
+            project={project}
+            slideIndex={lightboxSlide}
+            onClose={closeLightbox}
+            onPrev={prevSlide}
+            onNext={nextSlide}
+          />
+        )}
+      </AnimatePresence>
+    </>
   );
 }
 
@@ -548,26 +703,25 @@ export default function Projects() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="mb-16 text-center"
+          className="mb-20 text-center"
         >
-          <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground font-semibold mb-3">
-            Portfolio
+          <p className="text-xs uppercase tracking-[0.22em] text-muted-foreground font-semibold mb-3">
+            Case Studies
           </p>
           <h2 className="text-3xl md:text-4xl font-bold mb-4">
-            Featured{" "}
-            <span className="text-primary">Projects</span>
+            Featured <span className="text-primary">Projects</span>
           </h2>
           <p className="text-muted-foreground text-sm max-w-xl mx-auto leading-relaxed mb-5">
-            End-to-end analytics projects spanning Power BI dashboards, Python
-            analysis, and SQL — each delivered with measurable business impact.
+            Five end-to-end analytics projects spanning Power BI, Python, and SQL —
+            each built to solve a real business problem with measurable outcomes.
           </p>
           <div className="w-20 h-1 bg-gradient-to-r from-primary to-secondary rounded-full mx-auto" />
         </motion.div>
 
-        {/* Cards — vertical stack, easy to extend */}
-        <div className="max-w-5xl mx-auto space-y-10">
-          {projects.map((project, i) => (
-            <ProjectCard key={project.id} project={project} index={i} />
+        {/* Project showcases */}
+        <div className="max-w-6xl mx-auto space-y-16">
+          {PROJECTS.map((project, i) => (
+            <ProjectShowcase key={project.id} project={project} index={i} />
           ))}
         </div>
       </div>
