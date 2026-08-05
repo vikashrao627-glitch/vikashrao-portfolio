@@ -37,6 +37,26 @@ const projects = [
     icon: <BarChart className="text-secondary" size={24} />
   },
   {
+    title: "Student Social Media Addiction Dashboard",
+    problem: "Analyze students' social media usage and identify its relationship with academic performance and lifestyle.",
+    objectives: [
+      "Build an Executive Dashboard with KPIs on usage patterns",
+      "Analyze screen time distribution across platforms and demographics",
+      "Correlate social media habits with academic grades and sleep quality",
+      "Enable dynamic filtering by age, gender, platform, and study level"
+    ],
+    tools: ["Power BI", "Excel", "DAX", "Power Query"],
+    insights: [
+      "Heavy users (5+ hrs/day) showed 18% lower average GPA",
+      "Sleep deprivation strongly correlated with late-night social media use",
+      "Reels/Shorts content drove highest screen-time spikes among 18–22 age group"
+    ],
+    impact: "Provided interactive behavioral insights to support student wellness and academic intervention strategies",
+    category: "Power BI Dashboard",
+    github: "https://github.com/vikashrao627-glitch/Student-Social-Media-Addiction-Dashboard",
+    icon: <BarChart className="text-accent" size={24} />
+  },
+  {
     title: "Retail Store SQL Project",
     problem: "Extracting actionable business intelligence from a retail database using SQL.",
     objectives: [
@@ -125,7 +145,7 @@ export default function Projects() {
                     </div>
                   </div>
                   <a 
-                    href="https://github.com/vikashrao627-glitch" 
+                    href={(project as any).github ?? "https://github.com/vikashrao627-glitch"} 
                     target="_blank" 
                     rel="noopener noreferrer"
                     className="shrink-0 inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-white/5 hover:bg-white/10 text-sm font-medium transition-colors border border-white/10"
